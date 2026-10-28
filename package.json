@@ -1,15 +1,18 @@
 {
-  "name": "sites-project",
+  "name": "busan-hankki",
   "version": "0.1.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"
   },
   "scripts": {
-    "dev": "vinext dev",
-    "build": "vinext build",
-    "start": "vinext start",
-    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next"
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1",
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
+    "key:setup": "bash scripts/register-key.command",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
+    "key:parking": "bash scripts/register-parking-key.command"
   },
   "dependencies": {
     "next": "16.2.6",
