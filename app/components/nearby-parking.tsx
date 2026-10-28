@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import type { Restaurant } from '../../lib/restaurants';
 import type { NearbyParking } from '../../lib/parking';
+import { naverPlaceLink, naverAddressLink } from '../../lib/map-links';
 
 type Result = { mode?: 'live' | 'unconfigured'; items: NearbyParking[]; message?: string };
 export default function NearbyParkingPanel({ restaurant, sample }: { restaurant: Restaurant | null; sample: boolean }) {
@@ -43,7 +44,7 @@ export default function NearbyParkingPanel({ restaurant, sample }: { restaurant:
           <h3>{p.name}</h3><div className="parking-tags">{[p.kind, p.type].filter(Boolean).map((tag, index) => <span key={index}>{tag}</span>)}<span>{p.spaces === null ? '구획수 미제공' : `총 ${p.spaces}면`}</span></div>
           <p className="parking-address">{p.address || '주소 정보 없음'}</p><p className="parking-fee">{p.fee}</p>
           <details><summary>운영시간·상세 정보</summary><dl><dt>운영요일</dt><dd>{p.operatingDays || '정보 없음'}</dd><dt>평일</dt><dd>{p.weekday}</dd><dt>토요일</dt><dd>{p.saturday}</dd><dt>공휴일</dt><dd>{p.holiday}</dd><dt>전화</dt><dd>{p.phone || '정보 없음'}</dd>{p.notes && <><dt>참고</dt><dd>{p.notes}</dd></>}</dl></details>
-          <a className="parking-map" href={`https://map.naver.com/p/search/${encodeURIComponent(`${p.name} ${p.address}`)}`} target="_blank" rel="noreferrer">주차장 지도 보기 ↗</a><small>자료 기준 {p.dataDate || '미제공'}</small>
+          <a className="parking-map" href={naverPlaceLink(p)} target="_blank" rel="noreferrer">주차장 지도 검색 ↗</a>{p.address && <a className="parking-address-link" href={naverAddressLink(p.address)} target="_blank" rel="noreferrer">주소로 위치 확인 ↗</a>}<small>자료 기준 {p.dataDate || '미제공'}</small>
         </article>)}</div> : null}
     </div>
     <p className="parking-footnote">직선거리는 실제 이동거리와 달라요. 총 주차구획수는 실시간 빈자리가 아니며, 요금과 이용 가능 여부는 방문 전에 확인해 주세요.{sample && restaurant ? ' 현재 음식점 위치는 2018년 API 문서 예시 기준입니다.' : ''}<br/>출처: <a href="https://www.data.go.kr/data/15012896/standard.do" target="_blank" rel="noreferrer">전국주차장정보표준데이터 ↗</a></p>
